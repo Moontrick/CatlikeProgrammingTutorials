@@ -12,6 +12,7 @@ public class BezierSplineInspector : Editor
 
     private const int lineSteps = 10;
     private const float directionScale = 0.5f;
+    private const int stepsPerCurve = 10;
 
 
     private void OnSceneGUI()
@@ -57,10 +58,12 @@ public class BezierSplineInspector : Editor
         Handles.color = Color.green;
         Vector3 point = spline.GetPoint(0f);
         Handles.DrawLine(point, point + spline.GetDirection(0f) * directionScale);
-        for (int i = 0; i <= lineSteps; i++)
+
+        int steps = stepsPerCurve * spline.CurveCount;
+        for (int i = 1; i <= steps; i++)
         {
-            point = spline.GetPoint(i / (float)lineSteps);
-            Handles.DrawLine(point, point + spline.GetDirection(i / (float)lineSteps) * directionScale);
+            point = spline.GetPoint(i / (float)steps);
+            Handles.DrawLine(point, point + spline.GetDirection(i / (float)steps) * directionScale);
         }
     }
 

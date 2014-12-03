@@ -48,7 +48,7 @@ public class BezierSpline : MonoBehaviour
             i *= 3;
         }
 
-        return transform.TransformPoint(Bezier.GetPoint(points[0], points[1], points[2], points[3], t));
+        return transform.TransformPoint(Bezier.GetPoint(points[i], points[i + 1], points[i + 2], points[i + 3], t));
     }
 
 
@@ -70,7 +70,7 @@ public class BezierSpline : MonoBehaviour
             i *= 3;
         }
 
-        return transform.TransformPoint(Bezier.GetFirstDerivative(points[0], points[1], points[2], points[3], t)) - transform.position;
+        return transform.TransformPoint(Bezier.GetFirstDerivative(points[i], points[i + 1], points[i + 2], points[i + 3], t)) - transform.position;
     }
 
 
