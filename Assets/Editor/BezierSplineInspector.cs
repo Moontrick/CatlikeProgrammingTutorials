@@ -21,16 +21,34 @@ public class BezierSplineInspector : Editor
         handleRotation = Tools.pivotRotation == PivotRotation.Local ? handleTransform.rotation : Quaternion.identity;
 
         Vector3 p0 = ShowPoint(0);
-        Vector3 p1 = ShowPoint(1);
-        Vector3 p2 = ShowPoint(2);
-        Vector3 p3 = ShowPoint(3);
+        for (int i = 1; i < spline.points.Length; i += 3)
+        {
+            Vector3 p1 = ShowPoint(i);
+            Vector3 p2 = ShowPoint(i + 1);
+            Vector3 p3 = ShowPoint(i + 2);
 
-        Handles.color = Color.gray;
-        Handles.DrawLine(p0, p1);
-        Handles.DrawLine(p2, p3);
+            Handles.color = Color.gray;
+            Handles.DrawLine(p0, p1);
+            Handles.DrawLine(p2, p3);
+
+            Handles.DrawBezier(p0, p3, p1, p2, Color.white, null, 2f);
+            p0 = p3;
+        }
 
         ShowDirections();
-        Handles.DrawBezier(p0, p3, p1, p2, Color.white, null, 2f);
+    }
+
+
+    public override void OnInspectorGUI()
+    {
+        DrawDefaultInspector();
+        spline = target as BezierSpline;
+        if (GUILayout.Button("Add Curve"))
+        {
+            Undo.RecordObject(spline, "Add Curve");
+            spline.AddCurve();
+            EditorUtility.SetDirty(spline);
+        }
     }
 
 
