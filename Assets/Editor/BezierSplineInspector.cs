@@ -11,8 +11,12 @@ public class BezierSplineInspector : Editor
     private Quaternion handleRotation;
 
     private const int lineSteps = 10;
-    private const float directionScale = 0.5f;
     private const int stepsPerCurve = 10;
+    private const float directionScale = 0.5f;
+    private const float handleSize = 0.04f;
+    private const float pickSize = 0.06f;
+
+    private int selectedIndex = -1;
 
 
     private void OnSceneGUI()
@@ -72,13 +76,20 @@ public class BezierSplineInspector : Editor
     {
         Vector3 point = handleTransform.TransformPoint(spline.points[index]);
 
-        EditorGUI.BeginChangeCheck();
-        point = Handles.DoPositionHandle(point, handleRotation);
-        if (EditorGUI.EndChangeCheck())
+        Handles.color = Color.white;
+        if (Handles.Button(point, handleRotation, handleSize, pickSize, Handles.DotCap))
+            selectedIndex = index;
+
+        if (selectedIndex == index)
         {
-            Undo.RecordObject(spline, "Move Point");
-            EditorUtility.SetDirty(spline);
-            spline.points[index] = handleTransform.InverseTransformPoint(point);
+            EditorGUI.BeginChangeCheck();
+            point = Handles.DoPositionHandle(point, handleRotation);
+            if (EditorGUI.EndChangeCheck())
+            {
+                Undo.RecordObject(spline, "Move Point");
+                EditorUtility.SetDirty(spline);
+                spline.points[index] = handleTransform.InverseTransformPoint(point);
+            }
         }
 
         return point;
