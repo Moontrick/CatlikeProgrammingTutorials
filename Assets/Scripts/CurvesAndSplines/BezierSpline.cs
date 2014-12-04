@@ -44,7 +44,7 @@ public class BezierSpline : MonoBehaviour
         {
             t = Mathf.Clamp01(t) * CurveCount;
             i = (int)t;
-            t -= 1;
+            t -= i;
             i *= 3;
         }
 
