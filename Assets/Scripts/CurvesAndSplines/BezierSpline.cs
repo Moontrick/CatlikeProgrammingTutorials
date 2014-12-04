@@ -5,7 +5,29 @@ public class BezierSpline : MonoBehaviour
 {
 
 
-    public Vector3[] points;
+    [SerializeField]
+    private Vector3[] points;
+
+
+    public int ControlPointCount
+    {
+        get
+        {
+            return points.Length;
+        }
+    }
+
+
+    public Vector3 GetControlPoint(int index)
+    {
+        return points[index];
+    }
+
+
+    public void SetControlPoint(int index, Vector3 point)
+    {
+        points[index] = point;
+    }
 
 
     // Returns the total number of curves in the spline
